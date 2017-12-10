@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">RainbowTranslator</string>
+    <string name="searching_for_device">Searching for device</string>
+    <string name="socket_address">http://%s:%d</string>
+    <string name="search_start">Searching Raspberry PI</string>
+    <string name="search_dns">Resolving DNS</string>
+    <string name="search_local_network">Scanning local network</string>
+    <string name="search_finish">Found RPi at %s!</string>
+    <string name="error">Something went wrong</string>
+    <string name="delete">delete</string>
+    <string name="color_sample">Color sample</string>
 </resources>
