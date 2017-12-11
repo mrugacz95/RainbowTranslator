@@ -9,4 +9,6 @@
     <string name="error">Something went wrong</string>
     <string name="delete">delete</string>
     <string name="color_sample">Color sample</string>
+    <string name="delete_all">Delete all</string>
+    <string name="toggle_light">Toggle light</string>
 </resources>

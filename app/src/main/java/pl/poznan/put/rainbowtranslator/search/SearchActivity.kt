@@ -1,6 +1,8 @@
-package pl.poznan.put.rainbowtranslator
+package pl.poznan.put.rainbowtranslator.search
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -10,19 +12,24 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
+import pl.poznan.put.rainbowtranslator.R
+import pl.poznan.put.rainbowtranslator.color.ColorActivity
 import java.util.concurrent.TimeUnit
 
 class SearchActivity : AppCompatActivity() {
     companion object {
         val TAG: String = SearchActivity::class.java.simpleName
-        val ARG_DOMAIN: String = "pl.poznan.put.rainbowtranslator.SearchActivity.ARG_DOMAIN"
-        val ARG_PORT: String = "pl.poznan.put.rainbowtranslator.SearchActivity.ARG_port"
+        val ARG_DOMAIN: String = "pl.poznan.put.rainbowtranslator.search.SearchActivity.ARG_DOMAIN"
+        val ARG_PORT: String = "pl.poznan.put.rainbowtranslator.search.SearchActivity.ARG_port"
+        val SHARED_PREFS: String = "pl.poznan.put.rainbowtranslator.SHARED_PREFS"
     }
 
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var statusAdapter: StatusAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
         rvStatus.layoutManager = LinearLayoutManager(this)
         statusAdapter = StatusAdapter(arrayListOf(getString(R.string.search_start)), this)
         rvStatus.adapter = statusAdapter
@@ -47,6 +54,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun startColorActivity(domain: String, port: Int) {
+        val preferencesEditor = sharedPreferences.edit()
+        preferencesEditor.putString(ARG_DOMAIN, domain)
+        preferencesEditor.putInt(ARG_PORT, port)
+        preferencesEditor.apply()
+
         val intent = Intent(this, ColorActivity::class.java)
         intent.putExtra(ARG_DOMAIN, domain)
         intent.putExtra(ARG_PORT, port)

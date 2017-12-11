@@ -1,4 +1,4 @@
-package pl.poznan.put.rainbowtranslator
+package pl.poznan.put.rainbowtranslator.search
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.item_status.view.*
+import pl.poznan.put.rainbowtranslator.R
 
 
 class StatusAdapter(private var statuses: ArrayList<String>, private val context: Context) : RecyclerView.Adapter<StatusAdapter.StatusViewHolder>() {

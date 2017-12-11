@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.poznan.put.rainbowtranslator.SearchActivity">
+    tools:context="pl.poznan.put.rainbowtranslator.search.SearchActivity">
 
     <ProgressBar
         android:id="@+id/pbWaiting"

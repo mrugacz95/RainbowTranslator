@@ -2,34 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_sm"
+        android:layout_marginBottom="@dimen/margin_sm">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_sm">
+            android:layout_margin="@dimen/margin_md">
 
             <ImageView
                 android:id="@+id/ivColor"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@drawable/circle"
+                android:src="@drawable/circle"
                 android:contentDescription="@string/color_sample" />
 
             <TextView
+                android:id="@+id/tvColorName"
                 android:layout_toEndOf="@id/ivColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_md"
-                android:layout_toStartOf="@id/ibClose"
+                android:layout_toStartOf="@id/ibDelete"
                 tools:text="Brown" />
 
             <ImageButton
-                android:id="@+id/ibClose"
+                android:id="@+id/ibDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

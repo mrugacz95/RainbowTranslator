@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.poznan.put.rainbowtranslator.ColorActivity">
+    tools:context="pl.poznan.put.rainbowtranslator.color.ColorActivity">
 
     <FrameLayout
         android:id="@+id/flColor"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_md"
+        android:layout_marginStart="@dimen/margin_md"
+        android:layout_marginTop="@dimen/margin_md"
         android:padding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,24 +30,50 @@
         android:id="@+id/tvColorName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_sm"
+        app:layout_constraintStart_toStartOf="@+id/flColor"
         app:layout_constraintTop_toBottomOf="@id/flColor"
         tools:text="Black" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvColors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/rvHistory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_sm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvColorName" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabInsertColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_bookmark_border_white_24dp"
+        android:layout_marginBottom="@dimen/margin_md"
+        android:layout_marginEnd="@dimen/margin_md"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibToggleLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_highlight_black_24dp"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="@dimen/margin_md"
+        app:layout_constraintStart_toEndOf="@id/flColor"
+        app:layout_constraintTop_toTopOf="@id/flColor"
+        android:contentDescription="@string/toggle_light" />
+
+    <ImageButton
+        android:id="@+id/ibDeleteAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_sweep_black_24dp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/margin_sm"
+        app:layout_constraintEnd_toEndOf="@id/flColor"
+        app:layout_constraintTop_toBottomOf="@id/flColor"
+        android:contentDescription="@string/delete_all" />
 </android.support.constraint.ConstraintLayout>
