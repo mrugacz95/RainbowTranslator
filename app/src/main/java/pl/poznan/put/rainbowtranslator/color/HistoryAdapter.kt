@@ -36,6 +36,7 @@ class HistoryAdapter(private var history: ArrayList<ColorData>) : RecyclerView.A
         notifyDataSetChanged()
     }
 
+
     class HistoryViewHolder(statusView: View) : RecyclerView.ViewHolder(statusView) {
         fun bind(colorData: ColorData) = with(itemView) {
             ivColor.drawable.setColorFilter(Color.parseColor(colorData.rgb), PorterDuff.Mode.ADD)

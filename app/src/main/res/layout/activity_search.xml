@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     tools:context="pl.poznan.put.rainbowtranslator.search.SearchActivity">
 
-    <ProgressBar
-        android:id="@+id/pbWaiting"
+    <ImageView
+        android:id="@+id/ivWaiting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_raspberry_pi"
+        android:layout_marginTop="@dimen/margin_md"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,5 +27,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbWaiting" />
+        app:layout_constraintTop_toBottomOf="@+id/ivWaiting" />
 </android.support.constraint.ConstraintLayout>

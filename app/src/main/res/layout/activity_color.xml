@@ -8,16 +8,16 @@
 
     <FrameLayout
         android:id="@+id/flColor"
+        android:layout_width="@dimen/color_square_size"
+        android:layout_height="@dimen/color_square_size"
         android:layout_marginEnd="@dimen/margin_md"
         android:layout_marginStart="@dimen/margin_md"
         android:layout_marginTop="@dimen/margin_md"
+        android:background="@drawable/border"
         android:padding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/color_square_size"
-        android:layout_height="@dimen/color_square_size"
-        android:background="@drawable/border">
+        app:layout_constraintTop_toTopOf="parent">
 
         <View
             android:id="@+id/vColor"
@@ -35,23 +35,29 @@
         app:layout_constraintTop_toBottomOf="@id/flColor"
         tools:text="Black" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvHistory"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/srl_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_sm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvColorName" />
+        app:layout_constraintTop_toBottomOf="@id/tvColorName">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabInsertColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_bookmark_border_white_24dp"
         android:layout_marginBottom="@dimen/margin_md"
         android:layout_marginEnd="@dimen/margin_md"
+        android:src="@drawable/ic_bookmark_border_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -59,21 +65,21 @@
         android:id="@+id/ibToggleLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_highlight_black_24dp"
-        android:background="@android:color/transparent"
         android:layout_marginStart="@dimen/margin_md"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/toggle_light"
+        android:src="@drawable/ic_highlight_black_24dp"
         app:layout_constraintStart_toEndOf="@id/flColor"
-        app:layout_constraintTop_toTopOf="@id/flColor"
-        android:contentDescription="@string/toggle_light" />
+        app:layout_constraintTop_toTopOf="@id/flColor" />
 
     <ImageButton
         android:id="@+id/ibDeleteAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete_sweep_black_24dp"
-        android:background="@android:color/transparent"
         android:layout_marginTop="@dimen/margin_sm"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete_all"
+        android:src="@drawable/ic_delete_sweep_black_24dp"
         app:layout_constraintEnd_toEndOf="@id/flColor"
-        app:layout_constraintTop_toBottomOf="@id/flColor"
-        android:contentDescription="@string/delete_all" />
+        app:layout_constraintTop_toBottomOf="@id/flColor" />
 </android.support.constraint.ConstraintLayout>

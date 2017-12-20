@@ -4,17 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.zipWith
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
 import pl.poznan.put.rainbowtranslator.R
 import pl.poznan.put.rainbowtranslator.color.ColorActivity
-import java.util.concurrent.TimeUnit
+
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -38,30 +33,37 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search() {
-        Observable.just(R.string.search_dns, R.string.search_local_network, R.string.search_finish, R.string.search_finish)
-                .zipWith(Observable.interval(2, TimeUnit.SECONDS))
-                .map { (status, _) -> getString(status) }
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { status ->
-                            statusAdapter.addStatus(status)
-                            rvStatus.scrollToPosition(statusAdapter.itemCount - 1)
-                        },
-                        { Snackbar.make(clContainer, R.string.error, Snackbar.LENGTH_LONG).show() },
-                        { startColorActivity("raspberry.pi", 8080) }
-                )
+        startColorActivity("raspberrypi", null)
+//        val client = OkHttpClient() //TODO add checking okhttp response
+//        val request = Request.Builder()
+//                .url("raspberrypi")
+//                .build()
+//        client.newCall(request).enqueue(object : Callback {
+//            override fun onResponse(call: Call?, response: Response?) {
+//                if (response?.isSuccessful == true) {
+//                    val jsonObject = JSONObject(response.body()?.string())
+//                    if (jsonObject.getString("version") == "1.0.0") {
+//                        startColorActivity("raspberrypi", null)
+//                    }
+//                }
+//            }
+//            override fun onFailure(call: Call?, e: IOException?) {
+//                e?.printStackTrace()
+//            }
+//        })
     }
 
-    private fun startColorActivity(domain: String, port: Int) {
+    private fun startColorActivity(domain: String, port: Int?) {
         val preferencesEditor = sharedPreferences.edit()
         preferencesEditor.putString(ARG_DOMAIN, domain)
-        preferencesEditor.putInt(ARG_PORT, port)
+        if (port != null)
+            preferencesEditor.putInt(ARG_PORT, port)
         preferencesEditor.apply()
 
         val intent = Intent(this, ColorActivity::class.java)
         intent.putExtra(ARG_DOMAIN, domain)
         intent.putExtra(ARG_PORT, port)
         startActivity(intent)
+        finish()
     }
 }

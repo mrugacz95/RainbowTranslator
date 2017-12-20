@@ -22,12 +22,14 @@ class ColorActivity : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var historyAdapter: HistoryAdapter
     private lateinit var currentColor: ColorData
+
     companion object {
         val TAG: String = ColorActivity::class.java.simpleName
         val RESPONSE = "response"
         val SAVED_COLORS = "saved_colors"
         val DELETE_ALL = "delete_all"
-        val TOGGLE_LIGHT = "toggle_light"
+        val TOGGLE_LIGHT = "click"
+        val REQUEST = "request"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +51,10 @@ class ColorActivity : AppCompatActivity() {
             colorJson.put("rgb", currentColor.rgb)
             colorJson.put("color", currentColor.color)
             socket.emit("insert", colorJson)
+            historyAdapter.addData(currentColor)
+        }
+        srl_refresh.setOnRefreshListener {
+            socket.emit("colors", arrayListOf<String>())
         }
     }
 
@@ -63,7 +69,7 @@ class ColorActivity : AppCompatActivity() {
         val uri = URI(getString(R.string.socket_address, domain, port))
         socket = IO.socket(uri)
         socket.connect()
-        socket.emit("request", arrayListOf<String>())
+        socket.emit(REQUEST, arrayListOf<String>())
         socket.on(RESPONSE) { args -> onResponse(args) }
         socket.on(SAVED_COLORS) { args -> onColorList(args) }
     }
@@ -77,8 +83,9 @@ class ColorActivity : AppCompatActivity() {
                 .subscribe(
                         { color ->
                             currentColor = color
-                            vColor.setBackgroundColor(Color.parseColor("#00ff00"))
+                            vColor.setBackgroundColor(Color.parseColor(color.rgb))
                             tvColorName.text = color.color
+                            socket.emit(REQUEST, arrayListOf<String>())
                         }
                 )
     }
@@ -90,7 +97,7 @@ class ColorActivity : AppCompatActivity() {
                     val colors: ArrayList<ColorData> = ArrayList()
                     (0..(it.length() - 1))
                             .map { i -> it.getJSONObject(i) }
-                            .mapTo(colors) { ColorData(it["color"].toString(), it["rgb"].toString()) }
+                            .mapTo(colors) { ColorData(it.getString("color"), it.getString("rgb")) }
                     Observable.just(colors)
                 }
                 .flatMap { it -> it }
@@ -98,6 +105,7 @@ class ColorActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     historyAdapter.setData(it)
+                    srl_refresh.isRefreshing = false
                 }
     }
 
