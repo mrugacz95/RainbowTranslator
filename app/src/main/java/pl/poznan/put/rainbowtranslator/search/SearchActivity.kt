@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_search.*
 import pl.poznan.put.rainbowtranslator.R
 import pl.poznan.put.rainbowtranslator.color.ColorActivity
@@ -23,6 +25,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var statusAdapter: StatusAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_search)
         sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
         rvStatus.layoutManager = LinearLayoutManager(this)
