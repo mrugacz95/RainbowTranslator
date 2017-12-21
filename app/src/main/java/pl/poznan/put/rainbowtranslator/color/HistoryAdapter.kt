@@ -10,11 +10,12 @@ import kotlinx.android.synthetic.main.item_history.view.*
 import pl.poznan.put.rainbowtranslator.R
 import pl.poznan.put.rainbowtranslator.model.ColorData
 
-class HistoryAdapter(private var history: ArrayList<ColorData>) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(private var history: ArrayList<ColorData>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.bind(history[position])
         holder.itemView.ibDelete.setOnClickListener {
             history.removeAt(holder.adapterPosition)
+            onClickListener.onClick(history[holder.adapterPosition])
             notifyItemRemoved(holder.adapterPosition)
         }
     }
@@ -36,6 +37,9 @@ class HistoryAdapter(private var history: ArrayList<ColorData>) : RecyclerView.A
         notifyDataSetChanged()
     }
 
+    interface OnClickListener {
+        fun onClick(color: ColorData)
+    }
 
     class HistoryViewHolder(statusView: View) : RecyclerView.ViewHolder(statusView) {
         fun bind(colorData: ColorData) = with(itemView) {

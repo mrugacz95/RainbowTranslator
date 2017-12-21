@@ -18,24 +18,27 @@ import pl.poznan.put.rainbowtranslator.search.SearchActivity
 import java.net.URI
 
 
-class ColorActivity : AppCompatActivity() {
+class ColorActivity : AppCompatActivity(), HistoryAdapter.OnClickListener {
+
     private lateinit var socket: Socket
     private lateinit var historyAdapter: HistoryAdapter
-    private lateinit var currentColor: ColorData
+    private var currentColor: ColorData? = null
 
     companion object {
-        val TAG: String = ColorActivity::class.java.simpleName
-        val RESPONSE = "response"
-        val SAVED_COLORS = "saved_colors"
-        val DELETE_ALL = "delete_all"
+        val SELECT = "select"
+        val DELETE = "delete"
+        val DELETE_ALL = "deleteAll"
         val TOGGLE_LIGHT = "click"
-        val REQUEST = "request"
+        val INSERT = "insert"
+        val RGB = "rgb"
+        val COLOR = "color"
+        val COLORS = "colors"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_color)
-        historyAdapter = HistoryAdapter(arrayListOf())
+        historyAdapter = HistoryAdapter(arrayListOf(), this)
         rvHistory.layoutManager = LinearLayoutManager(this)
         rvHistory.adapter = historyAdapter
         openSocket()
@@ -47,14 +50,14 @@ class ColorActivity : AppCompatActivity() {
             historyAdapter.setData(arrayListOf())
         }
         fabInsertColor.setOnClickListener {
-            val colorJson = JSONObject()
-            colorJson.put("rgb", currentColor.rgb)
-            colorJson.put("color", currentColor.color)
-            socket.emit("insert", colorJson)
-            historyAdapter.addData(currentColor)
+            val tmpColor = currentColor
+            if (tmpColor != null) {
+                socket.emit(INSERT, tmpColor.toJson())
+                historyAdapter.addData(tmpColor)
+            }
         }
         srl_refresh.setOnRefreshListener {
-            socket.emit("colors", arrayListOf<String>())
+            socket.emit(SELECT, arrayListOf<String>())
         }
     }
 
@@ -69,15 +72,19 @@ class ColorActivity : AppCompatActivity() {
         val uri = URI(getString(R.string.socket_address, domain, port))
         socket = IO.socket(uri)
         socket.connect()
-        socket.emit(REQUEST, arrayListOf<String>())
-        socket.on(RESPONSE) { args -> onResponse(args) }
-        socket.on(SAVED_COLORS) { args -> onColorList(args) }
+        socket.emit(SELECT, arrayListOf<String>())
+        socket.on(COLOR) { args -> onColor(args) }
+        socket.on(COLORS) { args -> onColorList(args) }
     }
 
-    private fun onResponse(args: Array<out Any>) = run {
+    override fun onClick(color: ColorData) {
+        socket.emit(DELETE, color.toJson())
+    }
+
+    private fun onColor(args: Array<out Any>) = run {
         Observable.just(args)
                 .map { args[0] as JSONObject }
-                .map { it -> ColorData(it.getString("color"), it.getString("rgb")) }
+                .map { it -> ColorData(it.getString(COLOR), it.getString(RGB)) }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -85,7 +92,6 @@ class ColorActivity : AppCompatActivity() {
                             currentColor = color
                             vColor.setBackgroundColor(Color.parseColor(color.rgb))
                             tvColorName.text = color.color
-                            socket.emit(REQUEST, arrayListOf<String>())
                         }
                 )
     }
@@ -97,7 +103,7 @@ class ColorActivity : AppCompatActivity() {
                     val colors: ArrayList<ColorData> = ArrayList()
                     (0..(it.length() - 1))
                             .map { i -> it.getJSONObject(i) }
-                            .mapTo(colors) { ColorData(it.getString("color"), it.getString("rgb")) }
+                            .mapTo(colors) { ColorData(it.getString(COLOR), it.getString(RGB)) }
                     Observable.just(colors)
                 }
                 .flatMap { it -> it }
