@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
@@ -27,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         val TAG: String = SearchActivity::class.java.simpleName
         val ARG_DOMAIN: String = "pl.poznan.put.rainbowtranslator.search.SearchActivity.ARG_DOMAIN"
-        val ARG_PORT: String = "pl.poznan.put.rainbowtranslator.search.SearchActivity.ARG_port"
+        val ARG_PORT: String = "pl.poznan.put.rainbowtranslator.search.SearchActivity.ARG_PORT"
         val SHARED_PREFS: String = "pl.poznan.put.rainbowtranslator.SHARED_PREFS"
     }
 
@@ -42,6 +44,10 @@ class SearchActivity : AppCompatActivity() {
         statusAdapter = StatusAdapter(arrayListOf(getString(R.string.search_start)), this)
         rvStatus.adapter = statusAdapter
         statusAdapter.notifyDataSetChanged()
+        val rotation = RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        rotation.duration = 2000
+        rotation.repeatCount = -1
+        ivWaiting.startAnimation(rotation)
         search()
     }
 
@@ -57,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
                             rvStatus.scrollToPosition(statusAdapter.itemCount - 1)
                         },
                         { Snackbar.make(clContainer, R.string.error, Snackbar.LENGTH_LONG).show() },
-                        { checkAddress("raspberrypi", 8080) }
+                        { checkAddress("raspberrypi", 80) }
                 )
     }
 

@@ -14,8 +14,8 @@ class HistoryAdapter(private var history: ArrayList<ColorData>, private val onCl
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.bind(history[position])
         holder.itemView.ibDelete.setOnClickListener {
-            history.removeAt(holder.adapterPosition)
             onClickListener.onClick(history[holder.adapterPosition])
+            history.removeAt(holder.adapterPosition)
             notifyItemRemoved(holder.adapterPosition)
         }
     }
